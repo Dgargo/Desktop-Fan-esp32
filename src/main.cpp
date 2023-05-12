@@ -1,7 +1,11 @@
 #include <Arduino.h>
 
+#include "controller/PID_controller.h"
+#include "fan/fan.h"
+
 void setup() {
-  // put your setup code here, to run once:
+  Fan fan1(22,LEDC_TIMER_10_BIT,25000,LEDC_TIMER_1,LEDC_CHANNEL_1);
+  fan1.set_state(false);
 }
 
 void loop() {
