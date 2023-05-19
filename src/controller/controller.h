@@ -5,26 +5,97 @@
 
 class controller
 {
+/**
+ * @brief Class members
+ * @{
+ */
 private:
-    uint8_t set_point;
-    uint16_t number_parametrs;
-    float* input_parametrs_arr;
-    float avg_input_point;
-    uint32_t output_value;
-    uint8_t resolution;
-    uint32_t minPWM;
-    uint32_t maxPWM;
-
+    uint8_t set_point;/**< setting the value that the controller must support .0-100%*/
+    uint16_t number_parametrs;/**< The number of parameters from sensorss*/
+    float* input_parametrs_arr;/**< Array of input parameters from the sensor*/
+    float avg_input_point;/**< average value of the input parameters */
+    uint32_t output_value;/**< output value */
+    uint8_t resolution;/**< LEDC channel duty resolution*/
+    uint32_t minPWM;/**< the minimum value of the PWM signal*/
+    uint32_t maxPWM;/**< the maximum value of the PWM signal*/
+/**@}*/
 public:
+    /**
+    * @brief Construct a new controller object
+    * 
+    * @param set_point The desired set point value that the controller must support
+    * @param number_parametrs The number of parameters from sensors
+    * @param resolution The resolution of the LEDC channel duty cycle
+    * 
+    * @note Additionally, this constructor calculates the maximum PWM value and creates a dynamic array for the sensor parameters.
+    */
     controller(uint8_t set_point,uint32_t number_parametrs,uint8_t resolution);
+
+    /**
+    * @brief Destroy the controller object
+    * 
+    * @note Deletes the dynamic array used by the controller.
+    */
     ~controller();
+
+    /**
+    * @brief Set the setup point for the controller.
+    * 
+    * @param new_value The new value for the setup point.
+    *
+    * The setup point represents the desired value that the controller aims to achieve and maintain.
+    */
     void set_setup_point(uint8_t new_value);
+
+    /** @brief Set the input parameters array.
+    *
+    * @param newArray Array of parameters from sensors.
+    *
+    * @note This method allows setting a new array of input parameters for the controller.
+    */
     void set_input_paramers_arr(float* newArray);
+
+    /**
+    * @brief Calculate the average value of the input parameters.
+    *
+    * @note This method calculates the average value of the input parameters and stores it internally.
+    */
     void calculate_avg_input();
+
+    /**
+    * @brief Perform smooth control algorithm.
+    *
+    * This method applies a smooth control algorithm to adjust the controller's output gradually,
+    * aiming for a more gradual and stable response.
+    */
     void smooth_controller();
+
+    /**
+    * @brief Convert the controller's output value to a PWM signal.
+    *
+    * @return The converted output value as a PWM signal.
+    */
     uint32_t convert_output_PWM_signal();
+
+    /**
+    * @brief Get the input point value.
+    *
+    * @return The value of the input point.
+    */
     float get_input_point()const;
+
+    /**
+    * @brief Get the set point value.
+    *
+    * @return The value of the set point.
+    */
     uint8_t get_set_point()const;
+
+    /**
+    * @brief Get the maximum PWM value.
+    *
+    * @return The maximum PWM value.
+    */
     uint32_t get_maxPWM()const;
 };
 

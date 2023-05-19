@@ -4,7 +4,7 @@
 #include "fan/fan.h"
 
 void setup() {
-  Fan fan1(22,LEDC_TIMER_10_BIT,25000,LEDC_TIMER_1,LEDC_CHANNEL_1);
+  Fan fan1(GPIO_NUM_22,LEDC_TIMER_10_BIT,25000,LEDC_TIMER_1,LEDC_CHANNEL_1);
   fan1.set_state(false);
 }
 

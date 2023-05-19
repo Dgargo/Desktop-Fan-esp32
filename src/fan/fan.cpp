@@ -1,7 +1,8 @@
 
 #include "fan.h"
- 
-Fan::Fan(uint32_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num)
+#include "debug/debug.h"
+#include "config.h"
+Fan::Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num)
 {
     this->fan_pin = fan_pin;
     this->resolution = resolution;
@@ -11,6 +12,16 @@ Fan::Fan(uint32_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_time
 
     setup_timer();
     setup_PWM_channel();
+    #ifdef DEBUG
+    Serial.println("Debug construct fan");
+    Serial.printf("fan_pin : %d \n",fan_pin);
+    Serial.printf("ledc_timer_bit_t: %d\n",resolution);
+    Serial.printf("freq: %d\n",freq);
+    Serial.printf("timer_num %d\n",timer_num);
+    Serial.printf("channel_num %d\n",channel_num);
+    Serial.println("______________________________");
+    #endif
+    
 }
 
 Fan::~Fan()
@@ -52,8 +63,20 @@ void Fan::setup_PWM_channel()
 
 void Fan::change_speed()
 {
+    #ifdef DEBUG
+    Serial.println("before change_speed");
+    Serial.printf("speedPWM %d\n",speedPWM);
+    Serial.println("______________________");
+    #endif
+
     ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE,channel_num ,speedPWM));
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_LOW_SPEED_MODE, channel_num));
+
+    #ifdef DEBUG
+    Serial.println("after change_speed");
+    Serial.printf("speedPWM %d\n",speedPWM);
+    Serial.println("______________________");
+    #endif
 }
 
 
