@@ -6,7 +6,7 @@ Fan_3pin :: Fan_3pin(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t f
  
  #ifdef DEBUG
  Serial.println("fan3_pin construct");
- Serial.printf("tacho_pin %d/n",tacho_pin);
+ Serial.printf("tacho_pin %d \n",tacho_pin);
  Serial.println("_____________________________");
  #endif 
 
