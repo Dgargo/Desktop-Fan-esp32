@@ -49,11 +49,11 @@ public:
 
     /** @brief Set the input parameters array.
     *
-    * @param newArray Array of parameters from sensors.
+    * @param xData_queue  The handle of the queue to which the sensor data will be resieve. It should be initialized before calling this function.
     *
     * @note This method allows setting a new array of input parameters for the controller.
     */
-    void set_input_paramers_arr(float* newArray);
+    void set_input_paramers_arr(xQueueHandle xData_queue);
 
     /**
     * @brief Calculate the average value of the input parameters.

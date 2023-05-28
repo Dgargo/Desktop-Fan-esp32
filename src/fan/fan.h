@@ -10,6 +10,7 @@ class Fan
  * @brief Class members
  * @{
 */
+private:
     gpio_num_t fan_pin;/**< pin control fan*/
     bool state; /**< true-on fan , false-off fan*/
     ledc_timer_bit_t resolution; /**< [in] LEDC channel duty resolution*/

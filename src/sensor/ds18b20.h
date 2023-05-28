@@ -2,7 +2,7 @@
 
 #include <OneWire.h>
 #include <DallasTemperature.h>
-class ds18b20 : sensor
+class ds18b20 : public sensor
 {
 /**
  * @brief Class members
@@ -12,18 +12,7 @@ private:
 
     OneWire one_wire;/**< OneWire class for the sensor */
     DallasTemperature temp_sensor;/**< DallasTemperature class for the DS18B20 sensor*/
-    bool temp_mode;/**< Temperature mode: true - Celsius, false - Fahrenheit*/
     
-    float temperatureC;/**< Temperature in Celsius from the sensor*/
-    float temperatureF;/**< Temperature in Fahrenheit from the sensor*/
-
-    int32_t min_tempC;/**< Minimum temperature in Celsius*/
-    int32_t max_tempC;/**< Maximum temperature in Celsius*/
-    int32_t min_tempF;/**< Minimum temperature in Fahrenheit*/
-    int32_t max_tempF;/**< Maximum temperature in Fahrenheit*/
-
-    float convert_temperatureC;/**< Converted Celsius temperature value in percentage for sending to the queue*/
-    float convert_temperatureF;/**<  Converted Fahrenheit temperature value in percentage for sending to the queue*/
 /**@}*/
 public:
     /**
@@ -61,7 +50,7 @@ public:
      *
      * @param temp_mode Temperature mode: true - Celsius, false - Fahrenheit
      */
-    void set_temp_mode(bool temp_mode);
+    void set_temp_mode(bool temp_mode) override;
 
     /**
      * @brief Read data from the sensor in Celsius and Fahrenheit.
@@ -87,5 +76,6 @@ public:
     * @param xData_sensor_queue The handle of the queue to which the sensor data will be sent.
     */
     void send_data(xQueueHandle xData_sensor_queue) override;
+
 };
 

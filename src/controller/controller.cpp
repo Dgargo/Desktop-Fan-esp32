@@ -11,7 +11,7 @@ void controller::set_setup_point(uint8_t new_value)
     #endif
 }
 
-void controller::set_input_paramers_arr(float* newArray)
+void controller::set_input_paramers_arr(xQueueHandle xData_queue)
 {
     #ifdef DEBUG
     Serial.println("set_input_paramers_arr");
@@ -22,7 +22,14 @@ void controller::set_input_paramers_arr(float* newArray)
     }
     Serial.println("___________________");
     #endif
-    memcpy(input_parametrs_arr,newArray,number_parametrs*sizeof(float));
+    
+    // Read data from the queue and store it in input_parametrs_arr
+    for(int i=0; i<number_parametrs; i++)
+    {
+        float data;
+        xQueueReceive(xData_queue, &data, portMAX_DELAY);
+        input_parametrs_arr[i] = data;
+    }
     
     #ifdef DEBUG
     Serial.println("set_input_paramers_arr");
