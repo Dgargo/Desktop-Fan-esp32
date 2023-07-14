@@ -1,3 +1,5 @@
+#ifndef DS18B20_H
+#define DS18B20_H
 #include "sensor.h"
 
 #include <OneWire.h>
@@ -78,4 +80,5 @@ public:
     void send_data(xQueueHandle xData_sensor_queue) override;
 
 };
+#endif
 

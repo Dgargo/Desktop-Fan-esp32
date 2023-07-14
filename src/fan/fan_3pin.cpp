@@ -1,5 +1,8 @@
 #include "fan_3pin.h"
 #include "config.h"
+
+uint32_t Fan_3pin::counter_tacho;
+
 Fan_3pin :: Fan_3pin(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num,gpio_num_t tacho_pin ): Fan(fan_pin,resolution,freq,timer_num,channel_num)
 {
  this->tacho_pin=tacho_pin;

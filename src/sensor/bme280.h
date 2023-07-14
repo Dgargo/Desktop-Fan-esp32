@@ -1,6 +1,7 @@
+#ifndef BME280_H
+#define BME280_H
 #include "sensor.h"
 #include "config.h"
-
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
@@ -106,4 +107,4 @@ public:
     void send_data(xQueueHandle xData_sensor_queue) override;
 
 };
-
+#endif

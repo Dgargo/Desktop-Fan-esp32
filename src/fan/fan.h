@@ -73,6 +73,15 @@ public:
      * 
      */
     void change_speed();
+
+    /**
+     * @brief Sets the speed of the PWM.
+     * 
+     * This function allows you to set the speed of the PWM (Pulse Width Modulation) based on the input from the sensor.
+     * 
+     * @param speedPWM The new speed value to be set, specified as an unsigned 32-bit integer.
+     */
+    void set_speed(uint32_t speedPWM);
 };
 
 #endif

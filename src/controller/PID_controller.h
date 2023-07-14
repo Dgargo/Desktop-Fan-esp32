@@ -1,3 +1,5 @@
+#ifndef PID_CONTROLLER_H
+#define PID_CONTROLLER_H
 #include "controller.h"
 
 class PID_controller : public controller
@@ -46,3 +48,4 @@ public:
     */
     uint32_t calculatePID();
 };
+#endif

@@ -1,3 +1,5 @@
+#ifndef FAN_3PIN_H
+#define FAN_3PIN_H
 #include "fan.h"
 
 
@@ -59,6 +61,6 @@ public:
      */
     uint32_t calculate_RPM();
 };
-
+#endif
 
 

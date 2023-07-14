@@ -1,3 +1,5 @@
+#ifndef SENSOR_H
+#define SENSOR_H
 #include <Arduino.h>
 
 class sensor {
@@ -27,3 +29,4 @@ public:
     virtual void convert_data();
     virtual void send_data(xQueueHandle xData_sensor_queue); 
 };
+#endif

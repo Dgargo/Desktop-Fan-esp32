@@ -1,4 +1,4 @@
-//#ifdef CONTROLLER_H
+#ifndef CONTROLLER_H
 #define CONTROLLER_H
 
 #include "Arduino.h"
@@ -99,7 +99,4 @@ public:
     uint32_t get_maxPWM()const;
 };
 
-
-
-
-//#endif
+#endif

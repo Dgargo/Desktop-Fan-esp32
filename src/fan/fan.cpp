@@ -80,3 +80,9 @@ void Fan::change_speed()
 }
 
 
+void Fan::set_speed(uint32_t speedPWM)
+{
+    this->speedPWM=speedPWM;
+}
+
+
