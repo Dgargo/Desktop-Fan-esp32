@@ -18,6 +18,8 @@ private:
     uint32_t speedPWM; /**< [out]  speed in PWM value*/
     ledc_timer_t timer_num; /**< [in]  The timer source of channel*/
     ledc_channel_t channel_num;/**< [in]  LEDC channel*/
+
+    bool debug_costruct;/**< check on correct costruct*/
 /** @} */
 public:
 /**
@@ -33,6 +35,12 @@ public:
  */
     Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num);
 
+    /**
+     * @brief Construct a new Fan object
+     * 
+     * This constructor initializes the Fan object with default values and sets debug_construct to false.
+     */
+    Fan();
     /**
      * @brief Destroy the Fan object
      * 
@@ -82,6 +90,20 @@ public:
      * @param speedPWM The new speed value to be set, specified as an unsigned 32-bit integer.
      */
     void set_speed(uint32_t speedPWM);
+
+    /**
+     * @brief Check if the debug construct is used.
+     * 
+     * @return true if the construct is used with parameters.
+     * @return false if the construct is used without parameters.
+     */
+    bool get_debug_construct();
+
+    /**
+     * @brief debug method for show debug_construct in Serial port
+     * 
+     */
+    void show_debug_construct();
 };
 
 #endif

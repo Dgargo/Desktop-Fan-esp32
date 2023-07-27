@@ -15,6 +15,11 @@ Fan_3pin :: Fan_3pin(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t f
 
  setup_interrupt();
 }
+
+Fan_3pin ::Fan_3pin()
+{
+  
+}
 void  IRAM_ATTR Fan_3pin :: Intr_Handler_tacho(void *args)
 {
    counter_tacho++;

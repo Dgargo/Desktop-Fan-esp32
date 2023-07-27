@@ -2,6 +2,11 @@
 #include "debug/debug.h"
 
 
+
+bme280::bme280()
+{
+  
+}
 void bme280 :: set_temp_mode(bool temp_mode)
 {
   this->temp_mode = temp_mode;
@@ -38,14 +43,10 @@ void bme280 ::convert_data()
     convert_temperatureF = map(temperatureF,0,100,min_tempF,max_tempF);
     convert_temperatureF = constrain(convert_temperatureF,0,100);
 
-    convert_pressure = map(pressure,0,100,min_pressure,max_pressure);
-    convert_pressure = constrain(convert_pressure,0,100);
-
     #ifdef DEBUG
     Serial.println("convert_data from ds18b20");
     Serial.printf("convert tempC : %f\n",convert_temperatureC);
     Serial.printf("convert tempF : %f\n",convert_temperatureF);
-    Serial.printf("convert pressure : %f\n",convert_pressure);
     Serial.println("_____________________");
     #endif
 }
@@ -62,50 +63,50 @@ void bme280 :: send_data(xQueueHandle xData_sensor_queue)
     {
       xStatus = xQueueSendToBack(xData_sensor_queue,&convert_temperatureF,1000/portTICK_RATE_MS);
     }
-    xStatus = xQueueSendToBack(xData_sensor_queue,&convert_pressure,1000/portTICK_RATE_MS);
-    xStatus = xQueueSendToBack(xData_sensor_queue,&humidity,1000/portTICK_RATE_MS);
     if(xStatus != pdPASS)
       {
         Serial.println("Could not send to the queue");
       }
 }
 #ifdef I2C_SET
-bme280 :: bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF,int32_t min_pressure,int32_t max_pressure)
+bme280 :: bme280(bool temp_mode,int32_t min_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
 {
     this->temp_mode = temp_mode;
     this->min_tempC = min_tempC;
     this->max_tempC = max_tempC;
     this->min_tempF = min_tempC;
     this->max_tempF = max_tempF;
-    this->min_pressure = min_pressure;
-    this->max_pressure = max_pressure;
-    bme.begin();
-
+    Wire.begin();
+    bool status;
+    status = bme.begin(0x76);
+    if(!status)
+    {
+      Serial.println("Could not find a valid BME280 sensor, check wiring!");
+      while (true);
+    }
     #ifdef DEBUG
-      const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF,(uint32_t)min_pressure,(uint32_t)max_pressure};
+      const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF};
       size_t num_data = sizeof(data_arr) / sizeof(data_arr[0]);
-      const char* data_arr_name[] ={"min_tempC","max_tempC","min_tempF","max_tempF","min_pressure","max_pressure"}; 
-      debug_print("ds18b20 construct",data_arr,num_data,data_arr_name);
+      const char* data_arr_name[] ={"min_tempC","max_tempC","min_tempF","max_tempF"}; 
+      debug_print("bme280 construct",data_arr,num_data,data_arr_name);
     #endif
 }
 #endif
 
 #ifdef SPI_SET
-bme280 :: bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF,int32_t min_pressure,int32_t max_pressure)
+bme280 :: bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
 {
     this->temp_mode = temp_mode;
     this->min_tempC = min_tempC;
     this->max_tempC = max_tempC;
     this->min_tempF = min_tempC;
     this->max_tempF = max_tempF;
-    this->min_pressure = min_pressure;
-    this->max_pressure = max_pressure;
     bme.begin(CS);
 
     #ifdef DEBUG
-      const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF,(uint32_t)min_pressure,(uint32_t)max_pressure};
+      const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF};
       size_t num_data = sizeof(data_arr) / sizeof(data_arr[0]);
-      const char* data_arr_name[] ={"min_tempC","max_tempC","min_tempF","max_tempF","min_pressure","max_pressure"}; 
+      const char* data_arr_name[] ={"min_tempC","max_tempC","min_tempF","max_tempF"}; 
       debug_print("ds18b20 construct",data_arr,num_data,data_arr_name);
     #endif
 }

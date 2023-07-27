@@ -16,7 +16,7 @@ void controller::set_input_paramers_arr(xQueueHandle xData_queue)
     #ifdef DEBUG
     Serial.println("set_input_paramers_arr");
     Serial.println("set_input_paramers_arr before");
-    for(int i=0;i<number_parametrs;i++)
+    for(int i=0;i<3;i++)
     {
         Serial.printf("paramers %d : %d",i,input_parametrs_arr[i]);
     }
@@ -24,7 +24,7 @@ void controller::set_input_paramers_arr(xQueueHandle xData_queue)
     #endif
     
     // Read data from the queue and store it in input_parametrs_arr
-    for(int i=0; i<number_parametrs; i++)
+    for(int i=0; i<lenght_queue; i++)
     {
         float data;
         xQueueReceive(xData_queue, &data, portMAX_DELAY);
@@ -34,7 +34,7 @@ void controller::set_input_paramers_arr(xQueueHandle xData_queue)
     #ifdef DEBUG
     Serial.println("set_input_paramers_arr");
     Serial.println("set_input_paramers_arr after");
-    for(int i=0;i<number_parametrs;i++)
+    for(int i=0;i<lenght_queue;i++)
     {
         Serial.printf("paramers %d : %d",i,input_parametrs_arr[i]);
     }
@@ -44,11 +44,11 @@ void controller::set_input_paramers_arr(xQueueHandle xData_queue)
 void controller::calculate_avg_input()
 {
     float avg;
-    for(int i =0 ;i<number_parametrs;i++)
+    for(int i =0 ;i<lenght_queue;i++)
     {
         avg +=input_parametrs_arr[i];
     }
-    avg_input_point = avg/number_parametrs;
+    avg_input_point = avg/lenght_queue;
 }
 
 void controller::smooth_controller()
@@ -82,26 +82,28 @@ uint32_t controller::convert_output_PWM_signal()
     return output_value;
 }
 
-controller::controller(uint8_t set_point,uint32_t number_parametrs ,uint8_t resolution)
+controller::controller(uint8_t set_point,uint8_t resolution)
 {
     this->set_point = set_point ;
-    this->number_parametrs = number_parametrs;
     this->resolution = resolution;
     minPWM = 0 ;
     maxPWM = 2^resolution -1;
-    input_parametrs_arr = new float[number_parametrs];
 
     #ifdef DEBUG
-    const uint32_t data_arr[] = {set_point,number_parametrs,resolution,maxPWM};
+    const uint32_t data_arr[] = {set_point,resolution,maxPWM};
     size_t num_data = sizeof(data_arr) / sizeof(data_arr[0]);
-    const char* data_arr_name[] = {"set_point","number_parametrs","resolution","maxPWM"};
+    const char* data_arr_name[] = {"set_point","resolution","maxPWM"};
     debug_print("controller construct",data_arr,num_data,data_arr_name);
     #endif
 }
 
+controller:: controller()
+{
+
+}
 controller::~controller()
 {
-    delete[] input_parametrs_arr;
+
 }
 
 float controller::get_input_point()const

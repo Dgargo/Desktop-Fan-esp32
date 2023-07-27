@@ -5,7 +5,7 @@ void PID_controller :: set_coefficientPID(float newArr[3])
         #ifdef DEBUG
         Serial.println("set_coefficientPID");
         #endif 
-        for(int i = 0 ;i < 3;i++)
+        for(int i = 0 ;i < lenght_queue;i++)
         {
             coefficientPID[i] = newArr[i];
             
@@ -33,9 +33,9 @@ uint32_t PID_controller :: calculatePID()
     return outputPID;
 }
 
-PID_controller::PID_controller(uint8_t set_point,uint32_t number_parametrs,uint8_t resolution,float* coefficientPID,float dtime):controller(set_point,number_parametrs,resolution)
+PID_controller::PID_controller(uint8_t set_point,uint8_t resolution,float* coefficientPID,float dtime):controller(set_point,resolution)
 {
-    for(int i = 0 ;i<3;i++)
+    for(int i = 0 ;i<lenght_queue;i++)
     {
         this->coefficientPID[i] = coefficientPID[i];
     }
@@ -43,7 +43,7 @@ PID_controller::PID_controller(uint8_t set_point,uint32_t number_parametrs,uint8
 
     #ifdef DEBUG
     Serial.println("PID_contorller construct");
-    for(int i =0 ;i<3;i++)
+    for(int i =0 ;i<lenght_queue;i++)
     {
         Serial.printf("%d : %d \n",i,coefficientPID[i]);
     }
@@ -52,6 +52,12 @@ PID_controller::PID_controller(uint8_t set_point,uint32_t number_parametrs,uint8
     #endif
 }
 
+PID_controller ::PID_controller()
+{
+
+}
+
 PID_controller::~PID_controller()
 {
+    
 }

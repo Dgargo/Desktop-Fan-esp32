@@ -34,7 +34,7 @@ public:
      * 
      */
     ~Fan_3pin();
-    
+    Fan_3pin();
     /**
      * @brief Handler for processing interrupt from the tachometer senso
      * 

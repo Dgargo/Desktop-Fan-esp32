@@ -23,13 +23,10 @@ private:
     float pressure;/**< Pressure in Hectopascal*/
     float humidity;/**< Humidity in procent */
 
-    uint32_t min_pressure;/**< Minimum pressure in Hectopascal(980)*/
-    uint32_t max_pressure;/**< Maximum pressure in Hectopascal(1030)*/
-
-    float convert_pressure/**< Converted pressure Hectopascal value in percentage for sending to the queue*/;
 /** @} */ //Close BME280 
 public:
 
+    bme280();
     #ifdef I2C_SET
     /**
      * @brief Construct a new bme280 object using I2C protocol
@@ -39,12 +36,10 @@ public:
      * @param max_tempC Maximum temperature in Celsius
      * @param min_tempF Minimum temperature in Fahrenheit
      * @param max_tempF Maximum temperature in Fahrenheit
-     * @param min_pressure Minimum pressure in Hectopascal
-     * @param max_pressure Maximum pressure in Hectopascal
      * 
      * @note Additionally, it calls the bme.begin() method to configure sensor
      */
-    bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF,int32_t min_pressure,int32_t max_pressure);
+    bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
     #endif
 
     #ifdef SPI_SET
@@ -57,12 +52,10 @@ public:
      * @param max_tempC Maximum temperature in Celsius
      * @param min_tempF Minimum temperature in Fahrenheit
      * @param max_tempF Maximum temperature in Fahrenheit
-     * @param min_pressure Minimum pressure in Hectopascal
-     * @param max_pressure Maximum pressure in Hectopascal 
      * 
      * @note Additionally, it calls the bme.begin() method to configure sensor
      */
-    bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF,int32_t min_pressure,int32_t max_pressure);
+    bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
     #endif
 
     /**

@@ -9,7 +9,8 @@ Fan::Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_ti
     this->freq = freq;
     this->timer_num = timer_num;
     this->channel_num = channel_num;
-
+    debug_costruct = true;
+    set_state(true);
     setup_timer();
     setup_PWM_channel();
     #ifdef DEBUG
@@ -23,7 +24,10 @@ Fan::Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_ti
     #endif
     
 }
-
+Fan:: Fan()
+{
+    debug_costruct = false;
+}
 Fan::~Fan()
 {
 }
@@ -85,4 +89,13 @@ void Fan::set_speed(uint32_t speedPWM)
     this->speedPWM=speedPWM;
 }
 
+bool Fan::get_debug_construct()
+{
+    return debug_costruct;
+}
+
+void Fan::show_debug_construct()
+{
+    Serial.printf("debug construct for Fan : %d",debug_costruct);
+}
 

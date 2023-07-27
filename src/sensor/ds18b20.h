@@ -31,6 +31,7 @@ public:
      */
     ds18b20(int sensor_pin,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
 
+    ds18b20();
     /**
      * @brief Destroy the ds18b20 object
      * 

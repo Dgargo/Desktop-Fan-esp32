@@ -11,8 +11,11 @@
 #ifdef I2C_SETTINGS_H
   #define I2C_SET /**< on/off I2C protocol */
 
+  #define BME_ADRESS 0x76
+
   #define SDA_PIN GPIO_NUM_21
   #define SCL_PIN GPIO_NUM_22
+  
 #elif defined(SPI_SETTINGS_H)
   #define SPI_SET /**< on/off SPI protocol */
 
@@ -37,5 +40,7 @@
 
 #define BME280_NUM_PARAMETERS 3
 
-#define CONTROLLE_PARAMETER_SENSOR_SET_UP = 50;
+#define CONTROLLE_PARAMETER_SENSOR_SET_UP  50
+
+#define TASK_DELAY 5000
 
