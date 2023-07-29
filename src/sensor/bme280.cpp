@@ -1,6 +1,6 @@
 #include "bme280.h"
 #include "debug/debug.h"
-
+#include <custom-functions/custom-Arduino-function.h>
 
 
 bme280::bme280()
@@ -37,11 +37,11 @@ void bme280 :: read_data()
 
 void bme280 ::convert_data()
 {
-    convert_temperatureC = map(temperatureC,0,100,min_tempC,max_tempC);
-    convert_temperatureC = constrain(convert_temperatureC,0,100);
+    convert_temperatureC = map_float(temperatureC,0,100,min_tempC,max_tempC);
+    convert_temperatureC = constrain_float(convert_temperatureC,0,100);
 
-    convert_temperatureF = map(temperatureF,0,100,min_tempF,max_tempF);
-    convert_temperatureF = constrain(convert_temperatureF,0,100);
+    convert_temperatureF = map_float(temperatureF,0,100,min_tempF,max_tempF);
+    convert_temperatureF = constrain_float(convert_temperatureF,0,100);
 
     #ifdef DEBUG
     Serial.println("convert_data from ds18b20");

@@ -10,14 +10,14 @@ class controller
  * @{
  */
 protected:
-    uint8_t set_point;/**< setting the value that the controller must support .0-100%*/
+    uint32_t set_point;/**< setting the value that the controller must support .0-100%*/
     float input_parametrs_arr[3];/**< Array of input parameters from the sensor*/
     float avg_input_point;/**< average value of the input parameters */
     uint32_t output_value;/**< output value */
-    uint8_t resolution;/**< LEDC channel duty resolution*/
+    uint32_t resolution;/**< LEDC channel duty resolution*/
     uint32_t minPWM;/**< the minimum value of the PWM signal*/
     uint32_t maxPWM;/**< the maximum value of the PWM signal*/
-    const uint8_t lenght_queue = 3;
+    const uint32_t lenght_queue = 3;
 /**@}*/
 public:
 
@@ -30,7 +30,7 @@ public:
     * 
     * @note Additionally, this constructor calculates the maximum PWM value and creates a dynamic array for the sensor parameters.
     */
-    controller(uint8_t set_point,uint8_t resolution);
+    controller(uint32_t set_point,uint32_t resolution);
 
     /**
     * @brief Destroy the controller object

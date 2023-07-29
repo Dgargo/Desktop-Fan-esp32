@@ -29,16 +29,13 @@ uint32_t PID_controller :: calculatePID()
     const char* data_arr_name[] = {"err","integral","D","prevErr","outputPID"};
     debug_print("calculatePID",data_arr,num_data,data_arr_name);
     #endif
-
+    output_value = outputPID;
     return outputPID;
 }
 
-PID_controller::PID_controller(uint8_t set_point,uint8_t resolution,float* coefficientPID,float dtime):controller(set_point,resolution)
+PID_controller::PID_controller(uint32_t set_point,uint32_t resolution,float* coefficientPID,float dtime):controller(set_point,resolution)
 {
-    for(int i = 0 ;i<lenght_queue;i++)
-    {
-        this->coefficientPID[i] = coefficientPID[i];
-    }
+    set_coefficientPID(coefficientPID);
     this->dtime = dtime;
 
     #ifdef DEBUG

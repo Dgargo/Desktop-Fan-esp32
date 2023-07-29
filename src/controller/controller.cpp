@@ -1,6 +1,9 @@
 #include "controller.h"
 #include "debug/debug.h"
 #include "config.h"
+
+#include <cmath>
+
 void controller::set_setup_point(uint8_t new_value)
 {
     set_point = new_value;
@@ -43,12 +46,11 @@ void controller::set_input_paramers_arr(xQueueHandle xData_queue)
 
 void controller::calculate_avg_input()
 {
-    float avg;
     for(int i =0 ;i<lenght_queue;i++)
     {
-        avg +=input_parametrs_arr[i];
+        avg_input_point +=input_parametrs_arr[i];
     }
-    avg_input_point = avg/lenght_queue;
+    avg_input_point = avg_input_point/lenght_queue;
 }
 
 void controller::smooth_controller()
@@ -82,12 +84,12 @@ uint32_t controller::convert_output_PWM_signal()
     return output_value;
 }
 
-controller::controller(uint8_t set_point,uint8_t resolution)
+controller::controller(uint32_t set_point,uint32_t resolution)
 {
     this->set_point = set_point ;
     this->resolution = resolution;
     minPWM = 0 ;
-    maxPWM = 2^resolution -1;
+    maxPWM = static_cast<uint32_t>(pow(2,resolution)) - 1;
 
     #ifdef DEBUG
     const uint32_t data_arr[] = {set_point,resolution,maxPWM};

@@ -93,7 +93,7 @@ public:
     void IOT_assembly();
 
 
-    void bme280_check();
+    void assembly_check();
 #endif
 };
 

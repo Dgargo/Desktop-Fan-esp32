@@ -28,7 +28,7 @@ public:
     *
     * @note Additionally, this constructor creates an array to store the PID coefficients.
     */
-    PID_controller(uint8_t set_point,uint8_t resolution,float* coefficientPID,float dtime);
+    PID_controller(uint32_t set_point,uint32_t resolution,float* coefficientPID,float dtime);
 
     /**
      * @brief Destroy the pid controller object

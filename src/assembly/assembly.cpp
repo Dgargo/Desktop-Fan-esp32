@@ -65,13 +65,13 @@ assembly::assembly(bme280 *bme280_obj, PID_controller *PID_controller_obj, Fan_3
         }
         PID_controller_obj->set_input_paramers_arr(sensor_queue);
         PID_controller_obj->calculate_avg_input();
-        uint32_t output_from_sensor =PID_controller_obj->convert_output_PWM_signal();
+        uint32_t output_from_sensor = PID_controller_obj->calculatePID();
         Fan_3pin_obj->set_speed(output_from_sensor);
         Fan_3pin_obj->change_speed();
         Fan_3pin_obj->calculate_RPM();
     }
         
-    void assembly ::bme280_check()
+    void assembly ::assembly_check()
     {
         Serial.println("class create successful");
     }
