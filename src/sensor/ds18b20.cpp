@@ -39,23 +39,23 @@ void ds18b20 :: convert_data()
     Serial.println("_____________________");
     #endif
 }
-void ds18b20 :: send_data(xQueueHandle xData_sensor_queue)
+float ds18b20 :: send_data()
 {
-  portBASE_TYPE xStatus;
-
+    float data;
+    if(convert_temperatureC <-20 || convert_temperatureC> 300)
+    {
+      Serial.println("YOUR SENSOR IS BREAK ,CHECK IT");
+    }
     if(temp_mode)
     {
-      xStatus = xQueueSendToBack(xData_sensor_queue,&convert_temperatureC,1000/portTICK_RATE_MS);
+      data = convert_temperatureC;
     }
     else
     {
-      xStatus = xQueueSendToBack(xData_sensor_queue,&convert_temperatureF,1000/portTICK_RATE_MS);
+      data = convert_temperatureF;
     }
 
-    if(xStatus != pdPASS)
-      {
-        Serial.println("Could not send to the queue");
-      }
+    return data;
 }
 void ds18b20 :: set_temp_mode(bool temp_mode)
 {
@@ -82,7 +82,6 @@ ds18b20 :: ds18b20(int sensor_pin,bool temp_mode,int32_t mix_tempC ,int32_t max_
  const char* data_arr_name[] ={"min_tempC","max_tempC","min_tempF","max_tempF"}; 
  debug_print("ds18b20 construct",data_arr,num_data,data_arr_name);
  #endif
- ds18b20_setup();
 }
 
 ds18b20 :: ~ds18b20()

@@ -1,6 +1,5 @@
 #include "controller.h"
 #include "debug/debug.h"
-#include "config.h"
 
 #include <cmath>
 
@@ -13,44 +12,26 @@ void controller::set_setup_point(uint8_t new_value)
     Serial.println("_______________________");
     #endif
 }
-
-void controller::set_input_paramers_arr(xQueueHandle xData_queue)
+void controller::calculate_avg_input(float array_data[LENGTH_ARRAY_DATA])
 {
     #ifdef DEBUG
-    Serial.println("set_input_paramers_arr");
-    Serial.println("set_input_paramers_arr before");
-    for(int i=0;i<3;i++)
-    {
-        Serial.printf("paramers %d : %d",i,input_parametrs_arr[i]);
-    }
-    Serial.println("___________________");
+    Serial.printf("\n avg_input_point before : %f\n",avg_input_point);
     #endif
-    
-    // Read data from the queue and store it in input_parametrs_arr
-    for(int i=0; i<lenght_queue; i++)
+    if(array_data[0] >1000 || array_data[0]<-20)
     {
-        float data;
-        xQueueReceive(xData_queue, &data, portMAX_DELAY);
-        input_parametrs_arr[i] = data;
+        Serial.println("WRONG DATA SEND TO CONTROLLER CHECK IT");
+        return;
     }
-    
-    #ifdef DEBUG
-    Serial.println("set_input_paramers_arr");
-    Serial.println("set_input_paramers_arr after");
-    for(int i=0;i<lenght_queue;i++)
+    avg_input_point = 0;
+    for(int i =0 ;i<lenght_array;i++)
     {
-        Serial.printf("paramers %d : %d",i,input_parametrs_arr[i]);
+        avg_input_point +=array_data[i];
     }
-    #endif
-}
+    avg_input_point = avg_input_point/lenght_array;
 
-void controller::calculate_avg_input()
-{
-    for(int i =0 ;i<lenght_queue;i++)
-    {
-        avg_input_point +=input_parametrs_arr[i];
-    }
-    avg_input_point = avg_input_point/lenght_queue;
+    #ifdef DEBUG
+    Serial.printf("\n avg_input_point after : %f\n",avg_input_point);
+    #endif
 }
 
 void controller::smooth_controller()
@@ -122,3 +103,4 @@ uint32_t controller::get_maxPWM()const
 {
     return maxPWM;
 }
+

@@ -37,7 +37,6 @@ public:
      * @param min_tempF Minimum temperature in Fahrenheit
      * @param max_tempF Maximum temperature in Fahrenheit
      * 
-     * @note Additionally, it calls the bme.begin() method to configure sensor
      */
     bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
     #endif
@@ -46,16 +45,20 @@ public:
     /**
      * @brief Construct a new bme280 object using SPI protocol
      * 
-     * @param CS The CS (Chip Select) pin for SPI communication.
      * @param temp_mode The temperature mode to set (true for Celsius mode, false for Fahrenheit mode).
      * @param min_tempC Minimum temperature in Celsius
      * @param max_tempC Maximum temperature in Celsius
      * @param min_tempF Minimum temperature in Fahrenheit
      * @param max_tempF Maximum temperature in Fahrenheit
      * 
-     * @note Additionally, it calls the bme.begin() method to configure sensor
      */
-    bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
+    bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
+    /**
+     * @brief Set the up bme SPI object
+     * 
+     * @param CS The CS (Chip Select) pin for SPI communication.
+     */
+    void setup_bme_SPI(int8_t CS);
     #endif
 
     /**
@@ -88,16 +91,14 @@ public:
      */
     void convert_data() override;
 
-    /**
-     * @brief Send the sensor data to a queue.
-     *
-     * This function sends the temperature, pressure, and humidity data from the sensor to the specified queue. The queue handle `xData_sensor_queue` should be provided as a parameter.
-     *
-     * @param xData_sensor_queue The handle of the queue to which the sensor data will be sent. It should be initialized before calling this function.
-     *
-     * @note The data sent to the queue should be in a specific format or structure, depending on the requirements of the consumer of the data.
-     */
-    void send_data(xQueueHandle xData_sensor_queue) override;
 
+    float send_data() override;
+
+    /**
+     * @brief Set up and start I2C communication for BME280 sensor.
+     * 
+     * @param Adress The I2C address of the BME280 sensor. This should be the 7-bit address of the sensor
+     */
+    void bme_setup_I2C(uint8_t adress);
 };
 #endif

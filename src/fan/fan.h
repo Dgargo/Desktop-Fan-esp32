@@ -31,7 +31,6 @@ public:
  * @param timer_num The timer source of channel
  * @param channel_num LEDC channel
  * 
- * @note Additionally, it calls the setup_timer() and setup_PWM_channel() methods to configure timer and PWM channel
  */
     Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num);
 

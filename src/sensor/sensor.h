@@ -27,6 +27,6 @@ public:
     virtual void set_temp_mode(bool temp_mode);
     virtual void read_data(); 
     virtual void convert_data();
-    virtual void send_data(xQueueHandle xData_sensor_queue); 
+    virtual float send_data(); 
 };
 #endif

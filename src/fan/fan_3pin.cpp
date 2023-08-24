@@ -12,8 +12,6 @@ Fan_3pin :: Fan_3pin(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t f
  Serial.printf("tacho_pin %d \n",tacho_pin);
  Serial.println("_____________________________");
  #endif 
-
- setup_interrupt();
 }
 
 Fan_3pin ::Fan_3pin()

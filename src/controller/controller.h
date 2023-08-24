@@ -2,7 +2,7 @@
 #define CONTROLLER_H
 
 #include "Arduino.h"
-
+#include "config.h"
 class controller
 {
 /**
@@ -11,13 +11,12 @@ class controller
  */
 protected:
     uint32_t set_point;/**< setting the value that the controller must support .0-100%*/
-    float input_parametrs_arr[3];/**< Array of input parameters from the sensor*/
     float avg_input_point;/**< average value of the input parameters */
     uint32_t output_value;/**< output value */
     uint32_t resolution;/**< LEDC channel duty resolution*/
     uint32_t minPWM;/**< the minimum value of the PWM signal*/
     uint32_t maxPWM;/**< the maximum value of the PWM signal*/
-    const uint32_t lenght_queue = 3;
+    const size_t lenght_array = LENGTH_ARRAY_DATA;
 /**@}*/
 public:
 
@@ -48,20 +47,12 @@ public:
     */
     void set_setup_point(uint8_t new_value);
 
-    /** @brief Set the input parameters array.
-    *
-    * @param xData_queue  The handle of the queue to which the sensor data will be resieve. It should be initialized before calling this function.
-    *
-    * @note This method allows setting a new array of input parameters for the controller.
-    */
-    void set_input_paramers_arr(xQueueHandle xData_queue);
-
     /**
     * @brief Calculate the average value of the input parameters.
     *
     * @note This method calculates the average value of the input parameters and stores it internally.
     */
-    void calculate_avg_input();
+    void calculate_avg_input(float array_data[LENGTH_ARRAY_DATA]);
 
     /**
     * @brief Perform smooth control algorithm.
@@ -98,6 +89,7 @@ public:
     * @return The maximum PWM value.
     */
     uint32_t get_maxPWM()const;
+
 };
 
 #endif

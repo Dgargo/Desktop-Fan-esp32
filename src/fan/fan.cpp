@@ -11,8 +11,6 @@ Fan::Fan(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_ti
     this->channel_num = channel_num;
     debug_costruct = true;
     set_state(true);
-    setup_timer();
-    setup_PWM_channel();
     #ifdef DEBUG
     Serial.println("Debug construct fan");
     Serial.printf("fan_pin : %d \n",fan_pin);

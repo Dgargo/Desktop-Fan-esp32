@@ -1,11 +1,12 @@
 #include "PID_controller.h"
-#include "config.h"
+#include <cmath>
+
 void PID_controller :: set_coefficientPID(float newArr[3])
     {
         #ifdef DEBUG
         Serial.println("set_coefficientPID");
         #endif 
-        for(int i = 0 ;i < lenght_queue;i++)
+        for(int i = 0 ;i <3;i++)
         {
             coefficientPID[i] = newArr[i];
             
@@ -17,11 +18,22 @@ void PID_controller :: set_coefficientPID(float newArr[3])
 
 uint32_t PID_controller :: calculatePID()
 {
-    float err = get_set_point() - get_input_point();
-    integral = constrain(integral+(float)err*dtime*coefficientPID[1],0,get_maxPWM());
+    if(get_input_point() >1000 || get_input_point()<-20)
+    {
+        Serial.println("WRONG DATA SEND TO CONTROLLER CHECK IT");
+        return -999;
+    }
+    float err = (float)get_set_point() - get_input_point();
+    
+    if (fabs(err) < 0.5)
+    {
+        return 0;
+    }
+    
+    integral = constrain((float)(integral+(float)err*dtime*coefficientPID[1]),0,get_maxPWM());
     float D =(err-prevErr)/dtime;
     prevErr = err; 
-    float outputPID =constrain(err*coefficientPID[0]+integral+D*coefficientPID[2],0,get_maxPWM());
+    float outputPID =constrain((err*coefficientPID[0]+integral+D*coefficientPID[2]),0,get_maxPWM());
 
     #ifdef DEBUG
     const float data_arr[] ={err,integral,D,prevErr,outputPID};
@@ -30,7 +42,7 @@ uint32_t PID_controller :: calculatePID()
     debug_print("calculatePID",data_arr,num_data,data_arr_name);
     #endif
     output_value = outputPID;
-    return outputPID;
+    return (uint32_t)outputPID;
 }
 
 PID_controller::PID_controller(uint32_t set_point,uint32_t resolution,float* coefficientPID,float dtime):controller(set_point,resolution)
@@ -40,7 +52,7 @@ PID_controller::PID_controller(uint32_t set_point,uint32_t resolution,float* coe
 
     #ifdef DEBUG
     Serial.println("PID_contorller construct");
-    for(int i =0 ;i<lenght_queue;i++)
+    for(int i =0 ;i<3;i++)
     {
         Serial.printf("%d : %d \n",i,coefficientPID[i]);
     }

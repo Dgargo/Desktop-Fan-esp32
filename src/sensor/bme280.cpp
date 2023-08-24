@@ -44,38 +44,35 @@ void bme280 ::convert_data()
     convert_temperatureF = constrain_float(convert_temperatureF,0,100);
 
     #ifdef DEBUG
-    Serial.println("convert_data from ds18b20");
+    Serial.println("convert_data from bme280");
     Serial.printf("convert tempC : %f\n",convert_temperatureC);
     Serial.printf("convert tempF : %f\n",convert_temperatureF);
     Serial.println("_____________________");
     #endif
 }
 
-void bme280 :: send_data(xQueueHandle xData_sensor_queue)
+float bme280 :: send_data()
 {
-     portBASE_TYPE xStatus;
-
+   float data;
+    if(convert_temperatureC <-20 || convert_temperatureC> 300)
+    {
+      Serial.println("YOUR SENSOR IS BREAK ,CHECK IT");
+    }
     if(temp_mode)
     {
-      xStatus = xQueueSendToBack(xData_sensor_queue,&convert_temperatureC,1000/portTICK_RATE_MS);
+      data = convert_temperatureC;
     }
     else
     {
-      xStatus = xQueueSendToBack(xData_sensor_queue,&convert_temperatureF,1000/portTICK_RATE_MS);
+      data = convert_temperatureF;
     }
-    if(xStatus != pdPASS)
-      {
-        Serial.println("Could not send to the queue");
-      }
+
+    return data;
 }
 #ifdef I2C_SET
-bme280 :: bme280(bool temp_mode,int32_t min_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
+
+void bme280 :: bme_setup_I2C(uint8_t adress)
 {
-    this->temp_mode = temp_mode;
-    this->min_tempC = min_tempC;
-    this->max_tempC = max_tempC;
-    this->min_tempF = min_tempC;
-    this->max_tempF = max_tempF;
     Wire.begin();
     bool status;
     status = bme.begin(0x76);
@@ -84,6 +81,15 @@ bme280 :: bme280(bool temp_mode,int32_t min_tempC ,int32_t max_tempC ,int32_t mi
       Serial.println("Could not find a valid BME280 sensor, check wiring!");
       while (true);
     }
+}
+bme280 :: bme280(bool temp_mode,int32_t min_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
+{
+    this->temp_mode = temp_mode;
+    this->min_tempC = min_tempC;
+    this->max_tempC = max_tempC;
+    this->min_tempF = min_tempC;
+    this->max_tempF = max_tempF;
+    
     #ifdef DEBUG
       const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF};
       size_t num_data = sizeof(data_arr) / sizeof(data_arr[0]);
@@ -91,17 +97,18 @@ bme280 :: bme280(bool temp_mode,int32_t min_tempC ,int32_t max_tempC ,int32_t mi
       debug_print("bme280 construct",data_arr,num_data,data_arr_name);
     #endif
 }
+
 #endif
 
 #ifdef SPI_SET
-bme280 :: bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
+bme280 :: bme280(bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF)
 {
     this->temp_mode = temp_mode;
     this->min_tempC = min_tempC;
     this->max_tempC = max_tempC;
     this->min_tempF = min_tempC;
     this->max_tempF = max_tempF;
-    bme.begin(CS);
+   
 
     #ifdef DEBUG
       const uint32_t data_arr[] = {(uint32_t)min_tempC,(uint32_t)max_tempC,(uint32_t)min_tempF,(uint32_t)max_tempF};
@@ -110,6 +117,11 @@ bme280 :: bme280(int8_t CS,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,
       debug_print("ds18b20 construct",data_arr,num_data,data_arr_name);
     #endif
 }
+void bme280 :: setup_bme_SPI(int8_t CS)
+{
+   bme.begin(CS);
+}
+
 #endif
 
 bme280 :: ~bme280()

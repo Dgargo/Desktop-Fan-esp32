@@ -21,7 +21,6 @@ public:
     * @brief Construct a new PID controller object.
     *
     * @param set_point The desired value that the controller aims to achieve and maintain.
-    * @param number_parametrs The number of parameters from sensors.
     * @param resolution LEDC channel duty resolution.
     * @param coefficientPID The PID coefficients of the controller. The array size should be [3] = {kP, kI, kD}.
     * @param dtime The change in time interval in seconds.

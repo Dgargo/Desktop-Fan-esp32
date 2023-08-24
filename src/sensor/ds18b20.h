@@ -27,10 +27,13 @@ public:
      * @param min_tempF Minimum temperature in Fahrenheit
      * @param max_tempF Maximum temperature in Fahrenheit
      * 
-     * @note Additionally, it calls the ds18b20() method to configure sensor
      */
     ds18b20(int sensor_pin,bool temp_mode,int32_t mix_tempC ,int32_t max_tempC ,int32_t min_tempF ,int32_t max_tempF);
 
+    /**
+     * @brief Empty Construct a new ds18b20 object
+     * 
+     */
     ds18b20();
     /**
      * @brief Destroy the ds18b20 object
@@ -71,14 +74,7 @@ public:
      */
     void convert_data() override;
 
-   /**
-    * @brief Send the sensor data to a queue.
-    *
-    * This function sends the temperature data from the sensor to the specified queue. The queue handle `xData_sensor_queue` should be provided as a parameter.
-    *
-    * @param xData_sensor_queue The handle of the queue to which the sensor data will be sent.
-    */
-    void send_data(xQueueHandle xData_sensor_queue) override;
+    float send_data() override;
 
 };
 #endif

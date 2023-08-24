@@ -27,9 +27,9 @@ private:
     Fan *fan_obj;/**< Object for Fan*/
     Fan_3pin *Fan_3pin_obj; /**< Object for 3pin Fan */
 
-    uint8_t length_queue = 3;
-    xQueueHandle sensor_queue; /**< Queue for data from sensors */
-    xQueueHandle controller_queue; /**< Queue for data from controller */
+    uint32_t output_PWM;
+    const uint8_t length_array = LENGTH_ARRAY_DATA;
+    float array_data[LENGTH_ARRAY_DATA];
 /** @} */
 public:
     
@@ -38,7 +38,7 @@ public:
 
     #ifdef DS18B20_SETTINGS_H
 
-    assembly::assembly(ds18b20 *ds18b20_obj, controller *controller_obj, Fan_3pin *Fan_3pin_obj, xQueueHandle sensor_queue, xQueueHandle controller_queue);
+    assembly::assembly(ds18b20 *ds18b20_obj, controller *controller_obj, Fan_3pin *Fan_3pin_obj);
 
     /**
      * @brief Simple assembly for desktop fan
@@ -66,10 +66,37 @@ public:
      * @param bme280_obj bme280 sensor
      * @param PID_controller_obj PID controller
      * @param Fan_3pin_obj 3pin Fan
-     * @param sensor_queue Queue for data from sensors
-     * @param controller_queue Queue for data from controlle
      */
-    assembly(bme280 *bme280_obj,PID_controller *PID_controller_obj,Fan_3pin *Fan_3pin_obj,xQueueHandle sensor_queue,xQueueHandle controller_queue);
+    assembly(bme280 *bme280_obj,PID_controller *PID_controller_obj,Fan_3pin *Fan_3pin_obj);
+
+    /**
+     * @brief BME280 sensor assembly for data acquisition and processing
+     * 
+     * This method includes other methods from the BME280 class: read, convert, and send data to the queue.
+     * 
+     * @note Before calling this method, make sure that the BME280 sensor has been properly initialized and is ready to read data.
+     */
+    void bme280_assembly();
+
+    /**
+     * @brief PID controller assembly for data acquisition and processing
+     * 
+     * This method includes other methods from the PID_controller class for data processing.
+     * 
+     * 
+     * @note Before calling this method, make sure that the PID controller has been properly initialized and is ready to process data.
+     */
+    void PID_controller_assembly();
+
+    /**
+     * @brief 3-pin Fan assembly for changing RPM and reading it from the tachosensor.
+     * 
+     * 
+     * This method includes other methods from the Fan3pin class for changing and reading the fan's speed (RPM).
+     * 
+     * @note Before calling this method, ensure that the Fan 3-pin has been properly initialized to control the fan speed correctly.
+     */
+    void Fan3pin_assembly();
 
     /**
      * @brief Simple smart assembly
@@ -92,7 +119,7 @@ public:
      */
     void IOT_assembly();
 
-
+    void save_data_in_assembly(uint32_t i);
     void assembly_check();
 #endif
 };

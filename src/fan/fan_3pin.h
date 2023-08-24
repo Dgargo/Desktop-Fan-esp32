@@ -25,7 +25,6 @@ public:
      * @param channel_num LEDC channel
      * @param tacho_pin pin tachometer sensor fan
      * 
-     * @note Additionally, it calls the setup_interrupt() method to configure the interrupt handling for the tachometer sensor.
      */
     Fan_3pin(gpio_num_t fan_pin, ledc_timer_bit_t resolution, uint32_t freq, ledc_timer_t timer_num, ledc_channel_t channel_num,gpio_num_t tacho_pin );
     
