@@ -54,13 +54,20 @@ public:
     */
     void calculate_avg_input(float array_data[LENGTH_ARRAY_DATA]);
 
-    /**
+     /**
     * @brief Perform smooth control algorithm.
     *
     * This method applies a smooth control algorithm to adjust the controller's output gradually,
     * aiming for a more gradual and stable response.
     */
-    void smooth_controller();
+    /**
+     * @brief Perform smooth control algorithm.
+     * 
+     * This method applies a smooth control algorithm to adjust the controller's output gradually,
+     * aiming for a more gradual and stable response.
+     * @return output PWM value  after processing 
+     */
+    uint32_t smooth_controller();
 
     /**
     * @brief Convert the controller's output value to a PWM signal.

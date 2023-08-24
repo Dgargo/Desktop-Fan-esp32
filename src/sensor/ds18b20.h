@@ -74,6 +74,11 @@ public:
      */
     void convert_data() override;
 
+    /**
+    * @brief Send data from sensor output.
+    * 
+    * @return Temperature in percentage value.
+    */
     float send_data() override;
 
 };

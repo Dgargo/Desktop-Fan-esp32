@@ -70,6 +70,14 @@ public:
     assembly(bme280 *bme280_obj,PID_controller *PID_controller_obj,Fan_3pin *Fan_3pin_obj);
 
     /**
+     * @brief Construct a new assembly object
+     * 
+     * @param bme280_obj bme280 sensor
+     * @param controller_obj controller
+     * @param Fan_3pin_obj 3pin Fan
+     */
+    assembly(bme280 *bme280_obj,controller *controller_obj,Fan_3pin *Fan_3pin_obj);
+    /**
      * @brief BME280 sensor assembly for data acquisition and processing
      * 
      * This method includes other methods from the BME280 class: read, convert, and send data to the queue.
@@ -78,6 +86,14 @@ public:
      */
     void bme280_assembly();
 
+    /**
+     * @brief controller assembly for data acquisition and processing
+     * 
+     * This method includes other methods from the controller class for data processing.
+     * 
+     * @note Before calling this method, make sure that the  controller has been properly initialized and is ready to process data.
+     */
+    void controller_assembly();
     /**
      * @brief PID controller assembly for data acquisition and processing
      * 
@@ -119,7 +135,17 @@ public:
      */
     void IOT_assembly();
 
-    void save_data_in_assembly(uint32_t i);
+    /**
+     * @brief Save data from the sensor into an array
+     * 
+     * @param index The position in the array to save the data.
+     */
+    void save_data_in_assembly(uint32_t index);
+
+    /**
+     * @brief debug function for check assembly object 
+     * 
+     */
     void assembly_check();
 #endif
 };

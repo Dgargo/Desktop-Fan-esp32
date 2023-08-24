@@ -76,6 +76,24 @@ void task_bme280(void *parameter)
 }
 
 /**
+ * @brief Task for running a controller assembly.
+ * 
+ * @param parameter A pointer to an `assembly` object passed as a task parameter.
+ * 
+ * 
+ * @note Ensure that the `assembly` object passed as a parameter is properly initialized and contains valid data before starting this task. 
+ */
+void task_controller(void *parameter)
+{
+  assembly* obj = static_cast<assembly*>(parameter);
+  while (true)
+  {
+    obj->controller_assembly();
+    vTaskDelay(TASK_COTROLLER_DELAY/portTICK_RATE_MS);
+  }
+    
+}
+/**
  * @brief Task for running a PID controller assembly.
  * 
  * @param parameter A pointer to an `assembly` object passed as a task parameter.

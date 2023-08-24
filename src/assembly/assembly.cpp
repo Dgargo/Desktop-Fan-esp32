@@ -50,6 +50,9 @@ assembly::assembly(bme280 *bme280_obj, PID_controller *PID_controller_obj, Fan_3
     : bme280_obj(bme280_obj), PID_controller_obj(PID_controller_obj), Fan_3pin_obj(Fan_3pin_obj), fan_obj(nullptr), controller_obj(nullptr) {
 }
 
+assembly::assembly(bme280 *bme280_obj,controller *controller_obj,Fan_3pin *Fan_3pin_obj):bme280_obj(bme280_obj),controller_obj(controller_obj),Fan_3pin_obj(Fan_3pin_obj),fan_obj(nullptr),PID_controller_obj(nullptr){
+
+}
 void assembly :: bme280_assembly()
 {
    for(int i = 0 ;i<length_array;i++)
@@ -60,6 +63,11 @@ void assembly :: bme280_assembly()
         } 
 }
 
+void assembly ::controller_assembly()
+{
+    controller_obj->calculate_avg_input(array_data);
+    output_PWM = controller_obj->smooth_controller();
+}
 void assembly ::PID_controller_assembly()
 {
     PID_controller_obj->calculate_avg_input(array_data);
@@ -73,51 +81,51 @@ void assembly::Fan3pin_assembly()
     Fan_3pin_obj->calculate_RPM();
 }
 
-    void  assembly ::simple_smart_assembly()
+void  assembly ::simple_smart_assembly()
+{
+    for(int i = 0 ;i<length_array;i++)
     {
-        for(int i = 0 ;i<length_array;i++)
-        {
-            bme280_obj->read_data();
-            bme280_obj->convert_data();
-            save_data_in_assembly(i);
-        }
-        PID_controller_obj->calculate_avg_input(array_data);
-        uint32_t output_from_sensor = PID_controller_obj->calculatePID();
-        Fan_3pin_obj->set_speed(output_from_sensor);
-        Fan_3pin_obj->change_speed();
-        Fan_3pin_obj->calculate_RPM();
+        bme280_obj->read_data();
+        bme280_obj->convert_data();
+        save_data_in_assembly(i);
+    }
+    PID_controller_obj->calculate_avg_input(array_data);
+    uint32_t output_from_sensor = PID_controller_obj->calculatePID();
+    Fan_3pin_obj->set_speed(output_from_sensor);
+    Fan_3pin_obj->change_speed();
+    Fan_3pin_obj->calculate_RPM();
     }
         
-    void assembly ::assembly_check()
-    {
-        Serial.println("class create successful");
-    }
+void assembly ::assembly_check()
+{
+    Serial.println("class create successful");
+}
 
-    void assembly ::save_data_in_assembly(uint32_t i)
-    {
-        #ifdef DEBUG
-        Serial.println("______________________________");
-        Serial.println("save_data_in_assembly \ndata array before");
-        for(int i=0;i<length_array;i++)
-        {   
+void assembly ::save_data_in_assembly(uint32_t index)
+{
+    #ifdef DEBUG
+    Serial.println("______________________________");
+    Serial.println("save_data_in_assembly \ndata array before");
+    for(int i=0;i<length_array;i++)
+    {   
             
-            Serial.printf("%f \t",array_data[i]);
-        }
-        Serial.println("");
-        #endif
+        Serial.printf("%f \t",array_data[i]);
+    }
+    Serial.println("");
+    #endif
         
-            array_data[i] = bme280_obj->send_data();
+    array_data[index] = bme280_obj->send_data();
         
-        #ifdef DEBUG
-        Serial.println("______________________________");
-        Serial.println("data array after");
-        for(int i=0;i<length_array;i++)
-        {   
+    #ifdef DEBUG
+    Serial.println("______________________________");
+    Serial.println("data array after");
+    for(int i=0;i<length_array;i++)
+    {   
             
-            Serial.printf("%f \t",array_data[i]);
-        }
-        Serial.println("\n______________________________");
-        #endif
+        Serial.printf("%f \t",array_data[i]);
+    }
+    Serial.println("\n______________________________");
+    #endif
     }
 #endif
 

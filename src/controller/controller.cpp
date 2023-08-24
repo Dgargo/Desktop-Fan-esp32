@@ -34,7 +34,7 @@ void controller::calculate_avg_input(float array_data[LENGTH_ARRAY_DATA])
     #endif
 }
 
-void controller::smooth_controller()
+uint32_t controller::smooth_controller()
 {
     if(set_point > avg_input_point)
     {
@@ -46,9 +46,10 @@ void controller::smooth_controller()
     }
     else
     {
-        return;
+        return -1;
     }
     output_value = constrain(output_value,0,100);
+    return convert_output_PWM_signal();
 }
 
 uint32_t controller::convert_output_PWM_signal()

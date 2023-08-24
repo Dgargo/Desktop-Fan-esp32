@@ -11,6 +11,8 @@ void task_IOT_assembly(void *parameter);
 
 void task_bme280(void *parameter);
 
+void task_controller(void *parameter);
+
 void task_PID_controller(void *parameter);
 
 void task_Fan_3pin(void *parameter);
